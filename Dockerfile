@@ -1,15 +1,15 @@
 FROM python:3.12-slim
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends libopus0 \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
-COPY pyproject.toml README.md ./
-COPY doubaoime_asr/ ./doubaoime_asr/
-
-RUN pip install --no-cache-dir . "fastapi" "uvicorn" "python-multipart"
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libopus0 git \
+    && pip install --no-cache-dir \
+        "doubaoime-asr @ git+https://github.com/starccy/doubaoime-asr.git" \
+        "fastapi" "uvicorn" "python-multipart" \
+    && apt-get purge -y git \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY server.py .
 
