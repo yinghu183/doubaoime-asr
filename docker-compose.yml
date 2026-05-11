@@ -1,6 +1,6 @@
 services:
   doubao-asr:
-    build: .
+    image: ghcr.io/yinghu183/doubaoime-asr:latest
     container_name: doubao-asr
     ports:
       - "8080:8080"

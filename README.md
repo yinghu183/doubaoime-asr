@@ -39,17 +39,29 @@ brew install opus
 
 ## Docker 部署（HTTP 服务）
 
-如果你想将语音识别部署为局域网 HTTP 服务，供所有项目/语言调用，可以使用 Docker Compose 一键部署。
+只需一个 `docker-compose.yml` 文件即可部署为局域网 HTTP 服务，供所有项目/语言调用。
 
 ### 启动服务
 
+创建 `docker-compose.yml`：
+
+```yaml
+services:
+  doubao-asr:
+    image: ghcr.io/yinghu183/doubaoime-asr:latest
+    container_name: doubao-asr
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./credentials:/app/credentials
+    restart: unless-stopped
+```
+
 ```bash
-git clone https://github.com/yinghu183/doubaoime-asr.git
-cd doubaoime-asr
 docker compose up -d
 ```
 
-服务启动后监听 `8080` 端口，首次运行会自动注册设备，凭据持久化在 `./credentials/` 目录。
+首次启动会自动从 GitHub Container Registry 拉取镜像，无需克隆项目或编译。
 
 ### API 端点
 
@@ -74,7 +86,12 @@ curl -F "file=@recording.wav" http://localhost:8080/transcribe
 
 ### 在群晖 NAS 上部署
 
-将项目放到 NAS 上（如 `/volume1/docker/doubao-asr`），然后在 DSM 的 **Container Manager** → **项目** → **新增** → 选择 `docker-compose.yml` 并启动。
+1. 打开 DSM → **Container Manager** → **项目** → **新增**
+2. 粘贴上面的 `docker-compose.yml` 内容
+3. 设置项目路径（如 `/volume1/docker/doubao-asr`）
+4. 点击启动
+
+首次启动时会自动注册设备并缓存凭据。
 
 ---
 
