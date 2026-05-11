@@ -1,0 +1,9 @@
+services:
+  doubao-asr:
+    build: .
+    container_name: doubao-asr
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./credentials:/app/credentials
+    restart: unless-stopped
