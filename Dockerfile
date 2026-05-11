@@ -6,7 +6,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends libopus0 git \
     && pip install --no-cache-dir \
         "doubaoime-asr @ git+https://github.com/starccy/doubaoime-asr.git" \
-        "fastapi" "uvicorn" "python-multipart" \
+        "fastapi" "uvicorn" "python-multipart" "cryptography" \
     && apt-get purge -y git \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
